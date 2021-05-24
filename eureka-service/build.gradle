@@ -1,0 +1,46 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id "io.spring.dependency-management" version "1.0.9.RELEASE"
+	id 'com.bmuschko.docker-spring-boot-application' version '6.7.0'
+	id 'java'
+}
+
+docker {
+	springBootApplication {
+		baseImage = 'adoptopenjdk/openjdk11:alpine-slim'
+	}
+}
+
+ext{
+	springCloudVersion = 'Hoxton.SR3'
+	springBootVersion = '2.2.6.RELEASE'
+
+}
+group = 'com.getmelo.poc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+
+
+}
+
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}

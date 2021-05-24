@@ -1,0 +1,93 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+
+######################
+# Gradle
+######################
+.gradle/
+*/.gradle/
+
+/build/
+**/build/
+**/out/
+
+######################
+# Intellij
+######################
+.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+classes/
+
+*/.idea/
+*/*.iml
+*/*.iws
+*/*.ipr
+*/*.ids
+*/*.orig
+*/classes/
+
+######################
+# Others
+######################
+*.class
+*.*~
+*~
+.merge_file*
+######################
+
+
+
+# compiled output
+**/dist
+**/tmp
+**/out-tsc
+**/target
+
+# dependencies
+**/node_modules
+**/jest_0
+
+# IDEs and editors
+**/.gradle
+**/.idea
+**/out
+**/build
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
+
+# IDE - VSCode
+/.vscode
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+**/.sass-cache
+**/connect.lock
+**/coverage
+**/libpeerconnection.log
+**/npm-debug.log
+**/yarn-error.log
+**/testem.log
+**/typings
+
+
+# System Files
+**/.DS_Store
+**/Thumbs.db
+**/.sts4-cache
+
+services/**/bin/
+services/**/logs/
+services/**/*.txt
+services/buildAll
+*.log

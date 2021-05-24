@@ -1,0 +1,68 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    id 'com.bmuschko.docker-spring-boot-application' version '6.7.0'
+    id 'java'
+}
+
+docker {
+    springBootApplication {
+        baseImage = 'adoptopenjdk/openjdk11:alpine-slim'
+    }
+}
+
+group = 'com.getmelo.poc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+ext {
+
+    logbackVersion = '6.3'
+
+    lombokVersion = '1.18.12'
+
+    auth0SpringSecurityVersion = '1.3.0'
+    auth0MvcAuthCommonsVersion = '1.2.0'
+    springCloudVersion = 'Hoxton.SR3'
+    springBootVersion = '2.2.6.RELEASE'
+    springFoxSwaggerVersion = '2.9.2'
+
+}
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+
+    implementation "org.springframework.cloud:spring-cloud-starter-netflix-zuul"
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation "org.projectlombok:lombok:${lombokVersion}"
+    testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    implementation "com.auth0:mvc-auth-commons:${auth0MvcAuthCommonsVersion}"
+
+    implementation "net.logstash.logback:logstash-logback-encoder:${logbackVersion}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    implementation('org.springframework.security:spring-security-test')
+
+
+
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

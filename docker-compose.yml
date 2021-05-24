@@ -1,0 +1,74 @@
+version: '2.1'
+services:
+
+
+  api-gateway:
+    image: com.getmelo.poc/api-gateway:0.0.1-snapshot
+    hostname: api-gateway
+    container_name: api-gateway
+    environment:
+      EUREKA_SERVER: http://eureka-service:8761/eureka/
+    links:
+      - eureka-service
+    ports:
+      - "8881:8881"
+    networks:
+      - spring-cloud-network
+    entrypoint: /bin/sh
+    command: >
+      -c "
+           while ! (nc -z eureka-service 8761); do sleep 5; echo 'Waiting for eureka startup...'; done;
+          java -cp  /app/resources:/app/classes:/app/libs/* com.getmelo.poc.apigateway.ApiGatewayApplication;"
+
+  product-service:
+    image: com.getmelo.poc/product-service:0.0.1-snapshot
+    hostname: product-service
+    container_name: product-service
+    environment:
+      EUREKA_SERVER: http://eureka-service:8761/eureka/
+    links:
+      - eureka-service
+      - api-gateway
+    ports:
+      - "8883:8883"
+    networks:
+      - spring-cloud-network
+    entrypoint: /bin/sh
+    command: >
+      -c "
+           while ! (nc -z eureka-service 8761); do sleep 5; echo 'Waiting for eureka startup...'; done;
+          java -cp  /app/resources:/app/classes:/app/libs/* com.getmelo.poc.productservice.ProductServiceApplication;"
+
+  payment-service:
+    image: com.getmelo.poc/payment-service:0.0.1-snapshot
+    hostname: payment-service
+    container_name: payment-service
+    environment:
+      EUREKA_SERVER: http://eureka-service:8761/eureka/
+    links:
+      - eureka-service
+      - api-gateway
+      - product-service
+    ports:
+      - "8882:8882"
+    networks:
+      - spring-cloud-network
+    entrypoint: /bin/sh
+    command: >
+      -c "
+           while ! (nc -z eureka-service 8761); do sleep 5; echo 'Waiting for eureka startup...'; done;
+          java -cp  /app/resources:/app/classes:/app/libs/* com.getmelo.poc.paymentservice.PaymentServiceApplication;"
+
+  eureka-service:
+    image: com.getmelo.poc/eureka-service:0.0.1-snapshot
+    hostname: eureka-service
+    container_name: eureka-service
+    ports:
+      - "8761:8761"
+    networks:
+      - spring-cloud-network
+
+
+networks:
+  spring-cloud-network:
+    driver: bridge
